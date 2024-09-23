@@ -1,5 +1,10 @@
+#!/usr/bin/env python3
 """
-Simplified Arduino Data Logger with CSV Output
+Arduino Data Logger with CSV Output, Enhanced Terminal Output, and Data Cleaning
+
+This script reads data from an Arduino board via serial communication,
+parses and cleans the incoming data for temperature, humidity, and pressure readings,
+logs this information to a CSV file, and provides professional terminal output.
 
 Setup Instructions:
 1. Install required library:
@@ -26,11 +31,14 @@ from datetime import datetime
 import argparse
 import sys
 import csv
+import time
 
 def find_arduino_port():
     """
     Automatically find the Arduino port.
-    Returns the first USB port found, or None if no suitable port is found.
+    
+    Returns:
+    str or None: The device name of the first USB port found, or None if no suitable port is found.
     """
     ports = list(serial.tools.list_ports.comports())
     for p in ports:
@@ -38,9 +46,25 @@ def find_arduino_port():
             return p.device
     return None
 
+def clean_pressure(pressure_string):
+    """
+    Clean the pressure data by extracting only the valid pressure value.
+    
+    Args:
+    pressure_string (str): The raw pressure string from the Arduino
+
+    Returns:
+    float: The cleaned pressure value
+    """
+    # Extract the first float value from the pressure string
+    match = re.search(r'\d+\.\d+', pressure_string)
+    if match:
+        return float(match.group())
+    return None
+
 def read_arduino_data(port, baud_rate=9600, output_file='arduino_data.csv'):
     """
-    Read data from Arduino and save to CSV file.
+    Read data from Arduino, parse it, clean it, and save to a CSV file with enhanced terminal output.
     
     Args:
     port (str): Serial port to read from
@@ -48,60 +72,75 @@ def read_arduino_data(port, baud_rate=9600, output_file='arduino_data.csv'):
     output_file (str): Name of the CSV file to save data
     """
     try:
-        # Open serial connection and CSV file
         with serial.Serial(port, baud_rate, timeout=1) as ser, \
              open(output_file, 'w', newline='') as csvfile:
             
-            # Set up CSV writer
             csv_writer = csv.writer(csvfile)
-            csv_writer.writerow(['Timestamp', 'Temperature (°C)', 'Humidity (%)'])
+            csv_writer.writerow(['Timestamp', 'Temperature (°C)', 'Humidity (%)', 'Pressure (hPa)'])
             
-            print(f"Connected to {port}")
-            print(f"Logging data to {output_file}")
-            print("Press Ctrl+C to stop...")
+            print(f"\n[INFO] Connected to {port}")
+            print(f"[INFO] Logging data to {output_file}")
+            print("[INFO] Press Ctrl+C to stop...")
+            print("\n{:<19} {:<10} {:<12} {:<15}".format("Timestamp", "Temp(°C)", "Humidity(%)", "Pressure(hPa)"))
+            print("-" * 60)
             
+            last_data_time = time.time()
             while True:
-                # Read a line from the serial port
+                print("[STATUS] Listening for messages...", end='\r')
                 line = ser.readline().decode('utf-8', errors='replace').strip()
+                
                 if line.startswith("Received:"):
-                    # Extract temperature and humidity using regex
-                    match = re.search(r'T:(\d+\.\d+),H:(\d+\.\d+)', line)
+                    match = re.search(r'T:(\d+\.\d+),H:(\d+\.\d+),P:(.+)', line)
                     if match:
-                        temp, humidity = map(float, match.groups())
-                        timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+                        temp, humidity, pressure_raw = match.groups()
+                        pressure = clean_pressure(pressure_raw)
                         
-                        # Write data to CSV
-                        csv_writer.writerow([timestamp, temp, humidity])
-                        csvfile.flush()  # Ensure data is written immediately
-                        
-                        print(f"Recorded: Timestamp: {timestamp}, Temperature: {temp}°C, Humidity: {humidity}%")
+                        if pressure is not None:
+                            timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+                            
+                            csv_writer.writerow([timestamp, temp, humidity, pressure])
+                            csvfile.flush()
+                            
+                            print(" " * 60, end='\r')  # Clear the "Listening for messages..." line
+                            print("[RECEIVED] New data received")
+                            print("{:<19} {:<10.2f} {:<12.2f} {:<15.2f}".format(
+                                timestamp, float(temp), float(humidity), pressure))
+                            
+                            last_data_time = time.time()
+                        else:
+                            print("[WARNING] Invalid pressure data received", end='\r')
+                elif time.time() - last_data_time > 10:  # No data received for 10 seconds
+                    print(" " * 60, end='\r')  # Clear the "Listening for messages..." line
+                    print("[WARNING] No data received in the last 10 seconds", end='\r')
+                    time.sleep(1)  # Wait a bit before checking again
+                
     except serial.SerialException as e:
-        print(f"Error: {e}")
+        print(f"\n[ERROR] Serial communication error: {e}")
     except KeyboardInterrupt:
-        print("\nStopping data collection...")
+        print("\n[INFO] Stopping data collection...")
 
 def main():
-    # Set up command-line argument parsing
+    """
+    Main function to set up argument parsing and start the data logging process.
+    """
     parser = argparse.ArgumentParser(description="Arduino Data Logger")
     parser.add_argument("-p", "--port", help="Specify the Arduino port (e.g., /dev/ttyUSB0)")
     parser.add_argument("-o", "--output", default="arduino_data.csv", help="Specify the output CSV file")
     args = parser.parse_args()
 
-    # Determine which port to use
     if args.port:
         arduino_port = args.port
     else:
         arduino_port = find_arduino_port()
         if not arduino_port:
-            print("Error: Arduino port not found. Please specify the port using the -p option.")
+            print("[ERROR] Arduino port not found. Please specify the port using the -p option.")
             sys.exit(1)
 
-    print(f"Using Arduino port: {arduino_port}")
+    print(f"[INFO] Using Arduino port: {arduino_port}")
     
-    # Start reading data
     read_arduino_data(arduino_port, output_file=args.output)
     
-    print(f"\nData collection complete. Data saved to {args.output}")
+    print(f"\n[INFO] Data collection complete. Data saved to {args.output}")
 
 if __name__ == "__main__":
     main()
