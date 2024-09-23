@@ -5,12 +5,15 @@
 // Create an instance of the CC110 driver
 RH_CC110 cc110;
 
-// Pin definitions for CC1101 connection
-// CSN -> D10
-// SCK -> D13
-// MOSI -> D11
-// MISO -> D12
-// GDO0 -> D2
+// Pin definitions for CC1101 v2 connection to Arduino Uno
+// CSN (pin 4) -> D10 (Arduino Uno)
+// SCK (pin 5) -> D13
+// MOSI (pin 6) -> D11
+// MISO (pin 7) -> D12
+// GDO0 (pin 3) -> D2
+// GND (pin 1) -> GND 
+// VCC (pin 2) -> 3.3 V
+// GDO2 (pin 8) -> Not Used
 
 // Function to simulate temperature and humidity readings
 void getRandomSensorData(float &temperature, float &humidity) {
