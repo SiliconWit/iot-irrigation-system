@@ -33,18 +33,14 @@ import sys
 import csv
 import time
 
-def find_arduino_port():
+def find_arduino_ports():
     """
-    Automatically find the Arduino port.
+    Find all potential Arduino ports.
     
     Returns:
-    str or None: The device name of the first USB port found, or None if no suitable port is found.
+    list: A list of device names of USB ports found.
     """
-    ports = list(serial.tools.list_ports.comports())
-    for p in ports:
-        if 'USB' in p.device:
-            return p.device
-    return None
+    return [p.device for p in serial.tools.list_ports.comports() if 'USB' in p.device]
 
 def clean_pressure(pressure_string):
     """
@@ -56,7 +52,6 @@ def clean_pressure(pressure_string):
     Returns:
     float: The cleaned pressure value
     """
-    # Extract the first float value from the pressure string
     match = re.search(r'\d+\.\d+', pressure_string)
     if match:
         return float(match.group())
@@ -128,13 +123,35 @@ def main():
     parser.add_argument("-o", "--output", default="arduino_data.csv", help="Specify the output CSV file")
     args = parser.parse_args()
 
+    available_ports = find_arduino_ports()
+    
+    if not available_ports:
+        print("[ERROR] No Arduino ports found. Please check your connections.")
+        sys.exit(1)
+
     if args.port:
-        arduino_port = args.port
+        if args.port in available_ports:
+            arduino_port = args.port
+        else:
+            print(f"[WARNING] Specified port {args.port} not found.")
+            print(f"Available ports: {', '.join(available_ports)}")
+            arduino_port = input("Please enter the port to use from the available ports: ")
+            if arduino_port not in available_ports:
+                print("[ERROR] Invalid port selected. Exiting.")
+                sys.exit(1)
     else:
-        arduino_port = find_arduino_port()
-        if not arduino_port:
-            print("[ERROR] Arduino port not found. Please specify the port using the -p option.")
-            sys.exit(1)
+        if len(available_ports) == 1:
+            arduino_port = available_ports[0]
+        else:
+            print("Available ports:")
+            for i, port in enumerate(available_ports):
+                print(f"{i+1}. {port}")
+            choice = int(input("Enter the number of the port to use: ")) - 1
+            if 0 <= choice < len(available_ports):
+                arduino_port = available_ports[choice]
+            else:
+                print("[ERROR] Invalid choice. Exiting.")
+                sys.exit(1)
 
     print(f"[INFO] Using Arduino port: {arduino_port}")
     
