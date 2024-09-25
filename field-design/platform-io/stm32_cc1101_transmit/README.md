@@ -24,11 +24,11 @@ This guide outlines the assembly process for a wireless field data transmitter d
 | SWCLK          | CLK           | Clock    |
 | 3.3V           | +3.3V         | Power    |
 
-<img src="st-link-v2-stm32-bluepill-connection.png" alt="ST-LINK V2 to Blue Pill Connection" width="400"/>
+<img src="figures/st-link-v2-stm32-bluepill-connection.png" alt="ST-LINK V2 to Blue Pill Connection" width="400"/>
 
 ### CC1101 and AHT20+BMP280 to Blue Pill Connection
 
-<img src="cc1101-aht20-bmp280-stm32-bluepill-connection.png" alt="CC1101 and AHT20+BMP280 to Blue Pill Connection" width="400"/>
+<img src="figures/cc1101-aht20-bmp280-stm32-bluepill-connection.png" alt="CC1101 and AHT20+BMP280 to Blue Pill Connection" width="400"/>
 
 #### CC1101 to Blue Pill
 
@@ -53,8 +53,8 @@ This guide outlines the assembly process for a wireless field data transmitter d
 
 ### Physical Setup
 
-<img src="st-link-v2-stm32.png" alt="ST-Link V2 connected to Blue Pill" width="400"/>
-<img src="stm32-cc1101-aht20-bmp280.png" alt="CC1101 and AHT20+BMP280 connected to Blue Pill" width="400"/>
+<img src="figures/st-link-v2-stm32.png" alt="ST-Link V2 connected to Blue Pill" width="400"/>
+<img src="figures/stm32-cc1101-aht20-bmp280.png" alt="CC1101 and AHT20+BMP280 connected to Blue Pill" width="400"/>
 
 ## Firmware
 
