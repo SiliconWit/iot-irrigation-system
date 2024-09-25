@@ -34,6 +34,7 @@
 #define LED_OFF HIGH
 
 #define SMS_INTERVAL 1800000 // 30 minutes in milliseconds
+#define RESET_INTERVAL 2400000 // 40 minutes in milliseconds
 
 // Initialize CC1101 radio module
 RH_CC110 cc110(CC1101_CS_PIN, CC1101_GDO0_PIN);
@@ -43,7 +44,8 @@ HardwareSerial A9GSerial(PA10, PA9);
 
 const char* phone_number = "+254726240861";
 
-unsigned long previousMillis = 0;
+unsigned long previousSMSMillis = 0;
+unsigned long previousResetMillis = 0;
 unsigned long lastDataReceivedTime = 0;
 
 // Structure to hold sensor data
@@ -69,6 +71,7 @@ void resetA9G();
 bool parseSensorData(const String& dataString, SensorData& data);
 String formatSensorData(const SensorData& data);
 float parseFloat(const String& str);
+void resetBluePill();
 
 void setup() {
   pinMode(LED_PIN, OUTPUT);
@@ -90,9 +93,11 @@ void loop() {
   uint8_t buf[RH_CC110_MAX_MESSAGE_LEN];
   uint8_t len = sizeof(buf);
   
-  if (cc110.available()) {
+  if (cc110.waitAvailableTimeout(10000)) { // Wait for up to 10 seconds for a message
     if (cc110.recv(buf, &len)) {
       String receivedString = String((char*)buf);
+      
+      // Parse and process the data
       if (parseSensorData(receivedString, lastReceivedData)) {
         newDataReceived = true;
         lastDataReceivedTime = millis();
@@ -103,18 +108,16 @@ void loop() {
     } else {
       blinkLED(3, 50);  // 3 very quick blinks indicate reception failure
     }
+  } else {
+    // No data received, ensure lastReceivedData contains default values
+    lastReceivedData = {9999.0, 9999.0, 9999.0};
   }
   
   unsigned long currentMillis = millis();
   
   // Check if it's time to send an SMS
-  if (currentMillis - previousMillis >= SMS_INTERVAL) {
-    previousMillis = currentMillis;
-    
-    // Check if data is stale (no new data for more than 5 minutes)
-    if (currentMillis - lastDataReceivedTime > 300000) {
-      lastReceivedData = {9999.0, 9999.0, 9999.0};
-    }
+  if (currentMillis - previousSMSMillis >= SMS_INTERVAL) {
+    previousSMSMillis = currentMillis;
     
     if (testA9G()) {
       initGPS();
@@ -124,6 +127,8 @@ void loop() {
       
       if (sendSMS(message)) {
         blinkLED(2, 500);  // 2 long blinks indicate successful SMS
+        // Reset data to default after successful sending
+        lastReceivedData = {9999.0, 9999.0, 9999.0};
         newDataReceived = false;
       } else {
         blinkLED(5, 50);  // 5 quick blinks indicate SMS sending failure
@@ -132,6 +137,11 @@ void loop() {
       resetA9G();
       blinkLED(10, 50);  // 10 quick blinks indicate A9G reset attempt
     }
+  }
+  
+  // Check if it's time to reset the Blue Pill
+  if (currentMillis - previousResetMillis >= RESET_INTERVAL) {
+    resetBluePill();
   }
 }
 
@@ -230,7 +240,6 @@ void resetA9G() {
   initA9G();
 }
 
-// Helper function to parse float values, returning 9999.0 for invalid inputs
 float parseFloat(const String& str) {
   if (str.length() == 0) return 9999.0;
   
@@ -244,40 +253,43 @@ float parseFloat(const String& str) {
 }
 
 bool parseSensorData(const String& dataString, SensorData& data) {
-  // Initialize data to error values
-  data = {9999.0, 9999.0, 9999.0};
-
-  int t_index = dataString.indexOf("T:");
-  int h_index = dataString.indexOf("H:");
-  int p_index = dataString.indexOf("P:");
+  int temp_int, temp_frac, hum_int, hum_frac, pres_int, pres_frac;
   
-  if (t_index == -1 || h_index == -1 || p_index == -1) {
+  if (sscanf(dataString.c_str(), "T:%d.%d,H:%d.%d,P:%d.%d", 
+             &temp_int, &temp_frac, &hum_int, &hum_frac, &pres_int, &pres_frac) == 6) {
+    
+    data.temperature = temp_int + temp_frac / 100.0;
+    data.humidity = hum_int + hum_frac / 100.0;
+    data.pressure = pres_int + pres_frac / 100.0;
+    
+    return true;
+  } else {
+    // If parsing fails, set to default values
+    data = {9999.0, 9999.0, 9999.0};
     return false;
   }
-  
-  String temp = dataString.substring(t_index + 2, h_index);
-  String hum = dataString.substring(h_index + 2, p_index);
-  String pres = dataString.substring(p_index + 2);
-  
-  // Remove any non-numeric characters except for the decimal point and minus sign
-  temp.replace(String('\r'), "");
-  hum.replace(String('\r'), "");
-  pres.replace(String('\r'), "");
-  
-  // Parse the values using the helper function
-  data.temperature = parseFloat(temp);
-  data.humidity = parseFloat(hum);
-  data.pressure = parseFloat(pres);
-  
-  // Check if any valid data was parsed (not all values are 9999.0)
-  return (data.temperature != 9999.0 || data.humidity != 9999.0 || data.pressure != 9999.0);
 }
 
 String formatSensorData(const SensorData& data) {
-  char buffer[50];
-  snprintf(buffer, sizeof(buffer), "T:%.2f,H:%.2f,P:%.2f", 
-           data.temperature, data.humidity, data.pressure);
-  return String(buffer);
+  // Convert each float to a string with 2 decimal places
+  String tempStr = String(data.temperature, 2);
+  String humStr = String(data.humidity, 2);
+  String presStr = String(data.pressure, 2);
+
+  // Replace any empty strings with "9999.00"
+  if (tempStr.length() == 0 || tempStr == "nan") tempStr = "9999.00";
+  if (humStr.length() == 0 || humStr == "nan") humStr = "9999.00";
+  if (presStr.length() == 0 || presStr == "nan") presStr = "9999.00";
+
+  // Construct the final string
+  String result = "T:" + tempStr + ",H:" + humStr + ",P:" + presStr;
+
+  return result;
+}
+
+void resetBluePill() {
+  // Use the NVIC_SystemReset() function to reset the Blue Pill
+  NVIC_SystemReset();
 }
 
 /* LED Blink Status Guide:

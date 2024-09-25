@@ -95,7 +95,7 @@ For testing, power the device using a micro USB cable connected to the Blue Pill
 
 To optimize this system for large-scale precision irrigation, consider the following recommendations:
 
-1. **Sensor Expansion**: Incorporate additional sensors such as soil moisture sensors and leaf wetness sensors for more comprehensive data collection.
+1. **Sensor Expansion**: Incorporate additional sensors such as soil moisture sensors for more comprehensive data collection.
 
 2. **Network Topology**: Implement a mesh network topology to improve range and reliability across large fields.
 
@@ -111,9 +111,7 @@ To optimize this system for large-scale precision irrigation, consider the follo
 
 8. **Remote Management**: Implement over-the-air (OTA) firmware updates and remote configuration capabilities.
 
-9. **Data Analytics**: Develop analytics and machine learning models to provide actionable irrigation insights from the collected data.
-
-10. **Regulatory Compliance**: Ensure compliance with local regulations regarding radio frequency usage and environmental monitoring.
+9. **Regulatory Compliance**: Ensure compliance with local regulations regarding radio frequency usage and environmental monitoring.
 
 ## Troubleshooting
 

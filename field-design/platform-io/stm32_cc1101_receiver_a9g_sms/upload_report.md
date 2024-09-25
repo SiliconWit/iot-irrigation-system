@@ -1,12 +1,12 @@
 # PlatformIO Upload Report
 
-Date: 2024-09-24 23:07:02
+Date: 2024-09-25 14:31:25
 
 ## Command: `pio run --target clean`
 
 **Status:** Success
 
-**Execution Time:** 1.03 seconds
+**Execution Time:** 1.43 seconds
 
 **Output:**
 
@@ -16,7 +16,7 @@ Processing bluepill_f103c8 (platform: ststm32; board: bluepill_f103c8; framework
 Verbose mode can be enabled via `-v, --verbose` option
 Removing .pio/build/bluepill_f103c8
 Done cleaning
-========================= [SUCCESS] Took 0.36 seconds =========================
+========================= [SUCCESS] Took 0.35 seconds =========================
 
 ```
 
@@ -26,7 +26,7 @@ Done cleaning
 
 **Status:** Success
 
-**Execution Time:** 11.48 seconds
+**Execution Time:** 12.14 seconds
 
 **Output:**
 
@@ -96,12 +96,12 @@ Compiling .pio/build/bluepill_f103c8/SrcWrapper/src/HAL/stm32yyxx_hal_dma.c.o
 Compiling .pio/build/bluepill_f103c8/SrcWrapper/src/HAL/stm32yyxx_hal_dma2d.c.o
 Compiling .pio/build/bluepill_f103c8/SrcWrapper/src/HAL/stm32yyxx_hal_dma_ex.c.o
 Compiling .pio/build/bluepill_f103c8/SrcWrapper/src/HAL/stm32yyxx_hal_dsi.c.o
-Compiling .pio/build/bluepill_f103c8/SrcWrapper/src/HAL/stm32yyxx_hal_dts.c.o
 Compiling .pio/build/bluepill_f103c8/SrcWrapper/src/HAL/stm32yyxx_hal_eth.c.o
 Compiling .pio/build/bluepill_f103c8/SrcWrapper/src/HAL/stm32yyxx_hal_eth_ex.c.o
+Compiling .pio/build/bluepill_f103c8/SrcWrapper/src/HAL/stm32yyxx_hal_dts.c.o
 Compiling .pio/build/bluepill_f103c8/SrcWrapper/src/HAL/stm32yyxx_hal_exti.c.o
-Compiling .pio/build/bluepill_f103c8/SrcWrapper/src/HAL/stm32yyxx_hal_fdcan.c.o
 Compiling .pio/build/bluepill_f103c8/SrcWrapper/src/HAL/stm32yyxx_hal_firewall.c.o
+Compiling .pio/build/bluepill_f103c8/SrcWrapper/src/HAL/stm32yyxx_hal_fdcan.c.o
 Compiling .pio/build/bluepill_f103c8/SrcWrapper/src/HAL/stm32yyxx_hal_flash.c.o
 Compiling .pio/build/bluepill_f103c8/SrcWrapper/src/HAL/stm32yyxx_hal_flash_ex.c.o
 Compiling .pio/build/bluepill_f103c8/SrcWrapper/src/HAL/stm32yyxx_hal_flash_ramfunc.c.o
@@ -252,13 +252,13 @@ Compiling .pio/build/bluepill_f103c8/lib75c/RadioHead/RHEncryptedDriver.cpp.o
 Compiling .pio/build/bluepill_f103c8/lib75c/RadioHead/RHGenericDriver.cpp.o
 Compiling .pio/build/bluepill_f103c8/lib75c/RadioHead/RHGenericSPI.cpp.o
 Compiling .pio/build/bluepill_f103c8/lib75c/RadioHead/RHHardwareSPI.cpp.o
-Archiving .pio/build/bluepill_f103c8/lib6b7/libSPI.a
-Indexing .pio/build/bluepill_f103c8/lib6b7/libSPI.a
 Compiling .pio/build/bluepill_f103c8/lib75c/RadioHead/RHMesh.cpp.o
 Compiling .pio/build/bluepill_f103c8/lib75c/RadioHead/RHNRFSPIDriver.cpp.o
 Compiling .pio/build/bluepill_f103c8/lib75c/RadioHead/RHReliableDatagram.cpp.o
 Compiling .pio/build/bluepill_f103c8/lib75c/RadioHead/RHRouter.cpp.o
+Archiving .pio/build/bluepill_f103c8/lib6b7/libSPI.a
 Compiling .pio/build/bluepill_f103c8/lib75c/RadioHead/RHSPIDriver.cpp.o
+Indexing .pio/build/bluepill_f103c8/lib6b7/libSPI.a
 Compiling .pio/build/bluepill_f103c8/lib75c/RadioHead/RHSoftwareSPI.cpp.o
 Compiling .pio/build/bluepill_f103c8/lib75c/RadioHead/RH_ABZ.cpp.o
 Compiling .pio/build/bluepill_f103c8/lib75c/RadioHead/RH_ASK.cpp.o
@@ -283,10 +283,10 @@ Compiling .pio/build/bluepill_f103c8/FrameworkArduino/Stream.cpp.o
 Compiling .pio/build/bluepill_f103c8/FrameworkArduino/Tone.cpp.o
 Compiling .pio/build/bluepill_f103c8/FrameworkArduino/WInterrupts.cpp.o
 Compiling .pio/build/bluepill_f103c8/FrameworkArduino/WMath.cpp.o
-Compiling .pio/build/bluepill_f103c8/FrameworkArduino/WSerial.cpp.o
-Compiling .pio/build/bluepill_f103c8/FrameworkArduino/WString.cpp.o
 Archiving .pio/build/bluepill_f103c8/lib75c/libRadioHead.a
+Compiling .pio/build/bluepill_f103c8/FrameworkArduino/WSerial.cpp.o
 Indexing .pio/build/bluepill_f103c8/lib75c/libRadioHead.a
+Compiling .pio/build/bluepill_f103c8/FrameworkArduino/WString.cpp.o
 Compiling .pio/build/bluepill_f103c8/FrameworkArduino/abi.cpp.o
 Compiling .pio/build/bluepill_f103c8/FrameworkArduino/avr/dtostrf.c.o
 Compiling .pio/build/bluepill_f103c8/FrameworkArduino/board.c.o
@@ -306,10 +306,10 @@ Indexing .pio/build/bluepill_f103c8/libFrameworkArduino.a
 Linking .pio/build/bluepill_f103c8/firmware.elf
 Checking size .pio/build/bluepill_f103c8/firmware.elf
 Advanced Memory Usage is available via "PlatformIO Home > Project Inspect"
-RAM:   [===       ]  26.8% (used 5480 bytes from 20480 bytes)
-Flash: [========  ]  80.5% (used 52736 bytes from 65536 bytes)
+RAM:   [==        ]  25.0% (used 5120 bytes from 20480 bytes)
+Flash: [=======   ]  71.0% (used 46544 bytes from 65536 bytes)
 Building .pio/build/bluepill_f103c8/firmware.bin
-========================= [SUCCESS] Took 11.20 seconds =========================
+========================= [SUCCESS] Took 11.86 seconds =========================
 In file included from .pio/libdeps/bluepill_f103c8/RadioHead/RH_LoRaFileOps.cpp:5:
 .pio/libdeps/bluepill_f103c8/RadioHead/RH_LoRaFileOps.h:27:2: warning: #warning RH_LoRaFileOps unfinished [-Wcpp]
    27 | #warning RH_LoRaFileOps unfinished
@@ -324,7 +324,7 @@ In file included from .pio/libdeps/bluepill_f103c8/RadioHead/RH_LoRaFileOps.cpp:
 
 **Status:** Success
 
-**Execution Time:** 8.63 seconds
+**Execution Time:** 8.02 seconds
 
 **Output:**
 
@@ -354,13 +354,13 @@ Dependency Graph
 Building in release mode
 Checking size .pio/build/bluepill_f103c8/firmware.elf
 Advanced Memory Usage is available via "PlatformIO Home > Project Inspect"
-RAM:   [===       ]  26.8% (used 5480 bytes from 20480 bytes)
-Flash: [========  ]  80.5% (used 52736 bytes from 65536 bytes)
+RAM:   [==        ]  25.0% (used 5120 bytes from 20480 bytes)
+Flash: [=======   ]  71.0% (used 46544 bytes from 65536 bytes)
 Configuring upload protocol...
 AVAILABLE: blackmagic, cmsis-dap, dfu, jlink, mbed, stlink
 CURRENT: upload_protocol = stlink
 Uploading .pio/build/bluepill_f103c8/firmware.elf
-========================= [SUCCESS] Took 8.35 seconds =========================
+========================= [SUCCESS] Took 7.71 seconds =========================
 xPack Open On-Chip Debugger 0.12.0-01004-g9ea7f3d64-dirty (2023-01-30-15:03)
 Licensed under GNU GPL v2
 For bug reports, read
@@ -371,9 +371,9 @@ hla_swd
 none separate
 
 [stm32f1x.cpu] halted due to debug-request, current mode: Thread 
-xPSR: 0x01000000 pc: 0x08002680 msp: 0x20005000
+xPSR: 0x01000000 pc: 0x080025e0 msp: 0x20005000
 ** Programming Started **
-Warn : Adding extra erase range, 0x0800cf44 .. 0x0800cfff
+Warn : Adding extra erase range, 0x0800b70c .. 0x0800b7ff
 ** Programming Finished **
 ** Verify Started **
 ** Verified OK **
