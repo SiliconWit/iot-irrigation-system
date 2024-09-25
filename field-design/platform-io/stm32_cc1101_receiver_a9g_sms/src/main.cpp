@@ -33,7 +33,7 @@
 #define LED_ON LOW
 #define LED_OFF HIGH
 
-#define SMS_INTERVAL 180000 // 3 minutes in milliseconds
+#define SMS_INTERVAL 1800000 // 30 minutes in milliseconds
 
 // Initialize CC1101 radio module
 RH_CC110 cc110(CC1101_CS_PIN, CC1101_GDO0_PIN);

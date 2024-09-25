@@ -1,6 +1,6 @@
 # PlatformIO Upload Report
 
-Date: 2024-09-24 22:55:48
+Date: 2024-09-24 23:07:02
 
 ## Command: `pio run --target clean`
 
@@ -26,7 +26,7 @@ Done cleaning
 
 **Status:** Success
 
-**Execution Time:** 11.29 seconds
+**Execution Time:** 11.48 seconds
 
 **Output:**
 
@@ -283,10 +283,10 @@ Compiling .pio/build/bluepill_f103c8/FrameworkArduino/Stream.cpp.o
 Compiling .pio/build/bluepill_f103c8/FrameworkArduino/Tone.cpp.o
 Compiling .pio/build/bluepill_f103c8/FrameworkArduino/WInterrupts.cpp.o
 Compiling .pio/build/bluepill_f103c8/FrameworkArduino/WMath.cpp.o
-Archiving .pio/build/bluepill_f103c8/lib75c/libRadioHead.a
-Indexing .pio/build/bluepill_f103c8/lib75c/libRadioHead.a
 Compiling .pio/build/bluepill_f103c8/FrameworkArduino/WSerial.cpp.o
 Compiling .pio/build/bluepill_f103c8/FrameworkArduino/WString.cpp.o
+Archiving .pio/build/bluepill_f103c8/lib75c/libRadioHead.a
+Indexing .pio/build/bluepill_f103c8/lib75c/libRadioHead.a
 Compiling .pio/build/bluepill_f103c8/FrameworkArduino/abi.cpp.o
 Compiling .pio/build/bluepill_f103c8/FrameworkArduino/avr/dtostrf.c.o
 Compiling .pio/build/bluepill_f103c8/FrameworkArduino/board.c.o
@@ -309,7 +309,7 @@ Advanced Memory Usage is available via "PlatformIO Home > Project Inspect"
 RAM:   [===       ]  26.8% (used 5480 bytes from 20480 bytes)
 Flash: [========  ]  80.5% (used 52736 bytes from 65536 bytes)
 Building .pio/build/bluepill_f103c8/firmware.bin
-========================= [SUCCESS] Took 11.00 seconds =========================
+========================= [SUCCESS] Took 11.20 seconds =========================
 In file included from .pio/libdeps/bluepill_f103c8/RadioHead/RH_LoRaFileOps.cpp:5:
 .pio/libdeps/bluepill_f103c8/RadioHead/RH_LoRaFileOps.h:27:2: warning: #warning RH_LoRaFileOps unfinished [-Wcpp]
    27 | #warning RH_LoRaFileOps unfinished
@@ -324,7 +324,7 @@ In file included from .pio/libdeps/bluepill_f103c8/RadioHead/RH_LoRaFileOps.cpp:
 
 **Status:** Success
 
-**Execution Time:** 8.67 seconds
+**Execution Time:** 8.63 seconds
 
 **Output:**
 
@@ -360,7 +360,7 @@ Configuring upload protocol...
 AVAILABLE: blackmagic, cmsis-dap, dfu, jlink, mbed, stlink
 CURRENT: upload_protocol = stlink
 Uploading .pio/build/bluepill_f103c8/firmware.elf
-========================= [SUCCESS] Took 8.37 seconds =========================
+========================= [SUCCESS] Took 8.35 seconds =========================
 xPack Open On-Chip Debugger 0.12.0-01004-g9ea7f3d64-dirty (2023-01-30-15:03)
 Licensed under GNU GPL v2
 For bug reports, read
