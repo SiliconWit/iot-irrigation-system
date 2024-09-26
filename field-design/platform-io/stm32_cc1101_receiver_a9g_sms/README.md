@@ -1,4 +1,4 @@
-# STM32F103C8T6 Blue Pill CC1101 Wireless RF Receiver and sending sms or mqtt via a9g
+# Field Data Receiver Assembly Guide for Precision Irrigation
 
 ## Overview
 
@@ -79,13 +79,45 @@ lib_deps =
 
 The main code (`main.cpp`) can be found in our [GitHub repository](https://github.com/SiliconWit/iot-irrigation-system/blob/27e2de728da9e7971b87d2ad2a175b2986a54aaa/field-design/platform-io/stm32_cc1101_receiver_a9g_sms/src/main.cpp). Key features include wireless data reception, GSM/GPRS connectivity, and periodic system resets for improved reliability.
 
+
+Key features include:
+
+- Initialization of CC1101 and A9G modules
+- Receiving and parsing wireless data from sensor nodes
+- Formatting and sending data via SMS or MQTT
+- GPS location tracking
+- Periodic system resets for improved reliability
+- LED status indication for debugging
+
+## Assembly Instructions
+
+1. Connect the ST-LINK V2 to the Blue Pill following the connection table in the Hardware Setup section.
+2. Upload the firmware to the Blue Pill using PlatformIO or your preferred IDE.
+3. Disconnect the ST-LINK V2 after programming is complete.
+4. Connect the CC1101 module to the Blue Pill according to the CC1101 to Blue Pill connection table.
+5. Connect the A9G module to the Blue Pill as per the A9G to Blue Pill connection table.
+6. Double-check all connections for correctness and security.
+7. If using an external antenna for the CC1101 or A9G, ensure it's properly connected.
+
+## Power Supply
+
+For testing and initial setup, power the device using a micro USB cable connected to the Blue Pill's USB port.
+
+For field deployment, we recommend using a rechargeable LiPo battery with appropriate voltage regulation. The system typically requires a 3.7V to 4.2V supply. Ensure the battery capacity is sufficient for your intended deployment duration, taking into account the power consumption of the Blue Pill, CC1101, and A9G module.
+
+When using a battery:
+1. Connect the battery to the Blue Pill's BAT pin through a protection circuit to prevent over-discharge.
+2. Use a low-dropout (LDO) voltage regulator to provide a stable 3.3V supply to the CC1101 module.
+3. Power the A9G module separately using its recommended power supply circuit, typically involving a step-up converter to provide the required voltage for GSM transmission.
+
+Always ensure proper power management to optimize battery life and system reliability in remote deployments.
+
+
 ### SMS Output Examples
 
 <img src="figures/sms-notifications.png" alt="SMS Notifications" width="200"/> <img src="figures/sms-received.png" alt="SMS Received" width="200"/>
 
-## Recommendations for System Improvement
-
-Based on our field tests and user feedback, we recommend the following enhancements:
+## Field Deployment Recommendations
 
 1. Implement sleep modes to optimize power consumption, crucial for long-term deployment in remote areas.
 2. Integrate solar charging capabilities to ensure uninterrupted operation and reduce maintenance needs.
@@ -94,8 +126,6 @@ Based on our field tests and user feedback, we recommend the following enhanceme
 5. Add over-the-air (OTA) firmware update functionality for remote maintenance and feature upgrades.
 6. Integrate local data logging (e.g., SD card) as a backup measure in case of network failures.
 7. Implement adaptive sampling rates to balance data accuracy with power consumption based on environmental conditions.
-
-These improvements will significantly enhance the system's reliability, efficiency, and usability in real-world agricultural applications.
 
 ## Contact Information
 
