@@ -41,7 +41,6 @@ This guide details the master receiver sensor sink node for remote agricultural 
 | 5 (SCK)    | PA5           | SPI Clock |
 | 6 (MOSI)   | PA7           | SPI Master Out Slave In |
 | 7 (MISO)   | PA6           | SPI Master In Slave Out |
-| 7 (MISO)   | PA6           | SPI Master In Slave Out |
 | 8 (GDO2)   | Not Connected | General Digital Output 2 (Not used) |
 
 #### A9G to Blue Pill
