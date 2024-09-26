@@ -34,13 +34,15 @@ This guide details the master receiver sensor sink node for remote agricultural 
 
 | CC1101 Pin | Blue Pill Pin | Function |
 |------------|---------------|----------|
-| GND        | GND           | Ground   |
-| VCC        | 3.3V          | Power    |
-| GDO0       | PA3           | Digital Output 0 |
-| CSN        | PA4           | SPI Chip Select |
-| SCK        | PA5           | SPI Clock |
-| MOSI       | PA7           | SPI Master Out Slave In |
-| MISO       | PA6           | SPI Master In Slave Out |
+| 1 (GND)    | GND           | Ground   |
+| 2 (VCC)    | 3.3V          | Power    |
+| 3 (GDO0)   | PA3           | Digital Output 0 |
+| 4 (CSN)    | PA4           | SPI Chip Select |
+| 5 (SCK)    | PA5           | SPI Clock |
+| 6 (MOSI)   | PA7           | SPI Master Out Slave In |
+| 7 (MISO)   | PA6           | SPI Master In Slave Out |
+| 7 (MISO)   | PA6           | SPI Master In Slave Out |
+| 8 (GDO2)   | Not Connected | General Digital Output 2 (Not used) |
 
 #### A9G to Blue Pill
 
