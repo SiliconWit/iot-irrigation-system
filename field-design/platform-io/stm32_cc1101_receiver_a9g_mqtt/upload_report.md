@@ -1,12 +1,12 @@
 # PlatformIO Upload Report
 
-Date: 2024-09-25 22:36:41
+Date: 2024-09-25 16:00:44
 
 ## Command: `pio run --target clean`
 
 **Status:** Success
 
-**Execution Time:** 1.84 seconds
+**Execution Time:** 1.08 seconds
 
 **Output:**
 
@@ -16,7 +16,7 @@ Processing bluepill_f103c8 (platform: ststm32; board: bluepill_f103c8; framework
 Verbose mode can be enabled via `-v, --verbose` option
 Removing .pio/build/bluepill_f103c8
 Done cleaning
-========================= [SUCCESS] Took 0.53 seconds =========================
+========================= [SUCCESS] Took 0.39 seconds =========================
 
 ```
 
@@ -26,7 +26,7 @@ Done cleaning
 
 **Status:** Success
 
-**Execution Time:** 16.54 seconds
+**Execution Time:** 13.92 seconds
 
 **Output:**
 
@@ -48,6 +48,7 @@ Found 15 compatible libraries
 Scanning dependencies...
 Dependency Graph
 |-- RadioHead @ 1.120.0
+|-- IWatchdog @ 1.0.0
 |-- SPI @ 1.1.0
 Building in release mode
 Compiling .pio/build/bluepill_f103c8/USBDevice/src/USBSerial.cpp.o
@@ -246,35 +247,36 @@ Compiling .pio/build/bluepill_f103c8/SrcWrapper/src/syscalls.c.o
 Compiling .pio/build/bluepill_f103c8/src/main.cpp.o
 Compiling .pio/build/bluepill_f103c8/lib6b7/SPI/SPI.cpp.o
 Compiling .pio/build/bluepill_f103c8/lib6b7/SPI/utility/spi_com.c.o
-Compiling .pio/build/bluepill_f103c8/lib75c/RadioHead/RHCRC.cpp.o
-Compiling .pio/build/bluepill_f103c8/lib75c/RadioHead/RHDatagram.cpp.o
-Compiling .pio/build/bluepill_f103c8/lib75c/RadioHead/RHEncryptedDriver.cpp.o
-Compiling .pio/build/bluepill_f103c8/lib75c/RadioHead/RHGenericDriver.cpp.o
-Compiling .pio/build/bluepill_f103c8/lib75c/RadioHead/RHGenericSPI.cpp.o
-Compiling .pio/build/bluepill_f103c8/lib75c/RadioHead/RHHardwareSPI.cpp.o
-Compiling .pio/build/bluepill_f103c8/lib75c/RadioHead/RHMesh.cpp.o
+Compiling .pio/build/bluepill_f103c8/lib299/RadioHead/RHCRC.cpp.o
+Compiling .pio/build/bluepill_f103c8/lib299/RadioHead/RHDatagram.cpp.o
+Compiling .pio/build/bluepill_f103c8/lib299/RadioHead/RHEncryptedDriver.cpp.o
+Compiling .pio/build/bluepill_f103c8/lib299/RadioHead/RHGenericDriver.cpp.o
+Compiling .pio/build/bluepill_f103c8/lib299/RadioHead/RHGenericSPI.cpp.o
+Compiling .pio/build/bluepill_f103c8/lib299/RadioHead/RHHardwareSPI.cpp.o
+Compiling .pio/build/bluepill_f103c8/lib299/RadioHead/RHMesh.cpp.o
 Archiving .pio/build/bluepill_f103c8/lib6b7/libSPI.a
-Compiling .pio/build/bluepill_f103c8/lib75c/RadioHead/RHNRFSPIDriver.cpp.o
 Indexing .pio/build/bluepill_f103c8/lib6b7/libSPI.a
-Compiling .pio/build/bluepill_f103c8/lib75c/RadioHead/RHReliableDatagram.cpp.o
-Compiling .pio/build/bluepill_f103c8/lib75c/RadioHead/RHRouter.cpp.o
-Compiling .pio/build/bluepill_f103c8/lib75c/RadioHead/RHSPIDriver.cpp.o
-Compiling .pio/build/bluepill_f103c8/lib75c/RadioHead/RHSoftwareSPI.cpp.o
-Compiling .pio/build/bluepill_f103c8/lib75c/RadioHead/RH_ABZ.cpp.o
-Compiling .pio/build/bluepill_f103c8/lib75c/RadioHead/RH_ASK.cpp.o
-Compiling .pio/build/bluepill_f103c8/lib75c/RadioHead/RH_CC110.cpp.o
-Compiling .pio/build/bluepill_f103c8/lib75c/RadioHead/RH_E32.cpp.o
-Compiling .pio/build/bluepill_f103c8/lib75c/RadioHead/RH_LoRaFileOps.cpp.o
-Compiling .pio/build/bluepill_f103c8/lib75c/RadioHead/RH_MRF89.cpp.o
-Compiling .pio/build/bluepill_f103c8/lib75c/RadioHead/RH_NRF24.cpp.o
-Compiling .pio/build/bluepill_f103c8/lib75c/RadioHead/RH_NRF51.cpp.o
-Compiling .pio/build/bluepill_f103c8/lib75c/RadioHead/RH_NRF905.cpp.o
-Compiling .pio/build/bluepill_f103c8/lib75c/RadioHead/RH_RF22.cpp.o
-Compiling .pio/build/bluepill_f103c8/lib75c/RadioHead/RH_RF24.cpp.o
-Compiling .pio/build/bluepill_f103c8/lib75c/RadioHead/RH_RF69.cpp.o
-Compiling .pio/build/bluepill_f103c8/lib75c/RadioHead/RH_RF95.cpp.o
-Compiling .pio/build/bluepill_f103c8/lib75c/RadioHead/RH_Serial.cpp.o
-Compiling .pio/build/bluepill_f103c8/lib75c/RadioHead/RH_TCP.cpp.o
+Compiling .pio/build/bluepill_f103c8/lib299/RadioHead/RHNRFSPIDriver.cpp.o
+Compiling .pio/build/bluepill_f103c8/lib299/RadioHead/RHReliableDatagram.cpp.o
+Compiling .pio/build/bluepill_f103c8/lib299/RadioHead/RHRouter.cpp.o
+Compiling .pio/build/bluepill_f103c8/lib299/RadioHead/RHSPIDriver.cpp.o
+Compiling .pio/build/bluepill_f103c8/lib299/RadioHead/RHSoftwareSPI.cpp.o
+Compiling .pio/build/bluepill_f103c8/lib299/RadioHead/RH_ABZ.cpp.o
+Compiling .pio/build/bluepill_f103c8/lib299/RadioHead/RH_ASK.cpp.o
+Compiling .pio/build/bluepill_f103c8/lib299/RadioHead/RH_CC110.cpp.o
+Compiling .pio/build/bluepill_f103c8/lib299/RadioHead/RH_E32.cpp.o
+Compiling .pio/build/bluepill_f103c8/lib299/RadioHead/RH_LoRaFileOps.cpp.o
+Compiling .pio/build/bluepill_f103c8/lib299/RadioHead/RH_MRF89.cpp.o
+Compiling .pio/build/bluepill_f103c8/lib299/RadioHead/RH_NRF24.cpp.o
+Compiling .pio/build/bluepill_f103c8/lib299/RadioHead/RH_NRF51.cpp.o
+Compiling .pio/build/bluepill_f103c8/lib299/RadioHead/RH_NRF905.cpp.o
+Compiling .pio/build/bluepill_f103c8/lib299/RadioHead/RH_RF22.cpp.o
+Compiling .pio/build/bluepill_f103c8/lib299/RadioHead/RH_RF24.cpp.o
+Compiling .pio/build/bluepill_f103c8/lib299/RadioHead/RH_RF69.cpp.o
+Compiling .pio/build/bluepill_f103c8/lib299/RadioHead/RH_RF95.cpp.o
+Compiling .pio/build/bluepill_f103c8/lib299/RadioHead/RH_Serial.cpp.o
+Compiling .pio/build/bluepill_f103c8/lib299/RadioHead/RH_TCP.cpp.o
+Compiling .pio/build/bluepill_f103c8/liba35/IWatchdog/IWatchdog.cpp.o
 Compiling .pio/build/bluepill_f103c8/FrameworkArduino/HardwareSerial.cpp.o
 Compiling .pio/build/bluepill_f103c8/FrameworkArduino/IPAddress.cpp.o
 Compiling .pio/build/bluepill_f103c8/FrameworkArduino/Print.cpp.o
@@ -282,11 +284,13 @@ Compiling .pio/build/bluepill_f103c8/FrameworkArduino/RingBuffer.cpp.o
 Compiling .pio/build/bluepill_f103c8/FrameworkArduino/Stream.cpp.o
 Compiling .pio/build/bluepill_f103c8/FrameworkArduino/Tone.cpp.o
 Compiling .pio/build/bluepill_f103c8/FrameworkArduino/WInterrupts.cpp.o
+Archiving .pio/build/bluepill_f103c8/lib299/libRadioHead.a
+Indexing .pio/build/bluepill_f103c8/lib299/libRadioHead.a
 Compiling .pio/build/bluepill_f103c8/FrameworkArduino/WMath.cpp.o
 Compiling .pio/build/bluepill_f103c8/FrameworkArduino/WSerial.cpp.o
-Archiving .pio/build/bluepill_f103c8/lib75c/libRadioHead.a
 Compiling .pio/build/bluepill_f103c8/FrameworkArduino/WString.cpp.o
-Indexing .pio/build/bluepill_f103c8/lib75c/libRadioHead.a
+Archiving .pio/build/bluepill_f103c8/liba35/libIWatchdog.a
+Indexing .pio/build/bluepill_f103c8/liba35/libIWatchdog.a
 Compiling .pio/build/bluepill_f103c8/FrameworkArduino/abi.cpp.o
 Compiling .pio/build/bluepill_f103c8/FrameworkArduino/avr/dtostrf.c.o
 Compiling .pio/build/bluepill_f103c8/FrameworkArduino/board.c.o
@@ -306,10 +310,10 @@ Indexing .pio/build/bluepill_f103c8/libFrameworkArduino.a
 Linking .pio/build/bluepill_f103c8/firmware.elf
 Checking size .pio/build/bluepill_f103c8/firmware.elf
 Advanced Memory Usage is available via "PlatformIO Home > Project Inspect"
-RAM:   [==        ]  25.0% (used 5120 bytes from 20480 bytes)
-Flash: [=======   ]  71.0% (used 46544 bytes from 65536 bytes)
+RAM:   [===       ]  25.1% (used 5132 bytes from 20480 bytes)
+Flash: [=======   ]  71.9% (used 47148 bytes from 65536 bytes)
 Building .pio/build/bluepill_f103c8/firmware.bin
-========================= [SUCCESS] Took 16.17 seconds =========================
+========================= [SUCCESS] Took 13.60 seconds =========================
 In file included from .pio/libdeps/bluepill_f103c8/RadioHead/RH_LoRaFileOps.cpp:5:
 .pio/libdeps/bluepill_f103c8/RadioHead/RH_LoRaFileOps.h:27:2: warning: #warning RH_LoRaFileOps unfinished [-Wcpp]
    27 | #warning RH_LoRaFileOps unfinished
@@ -324,7 +328,7 @@ In file included from .pio/libdeps/bluepill_f103c8/RadioHead/RH_LoRaFileOps.cpp:
 
 **Status:** Success
 
-**Execution Time:** 8.57 seconds
+**Execution Time:** 8.29 seconds
 
 **Output:**
 
@@ -350,17 +354,18 @@ Found 15 compatible libraries
 Scanning dependencies...
 Dependency Graph
 |-- RadioHead @ 1.120.0
+|-- IWatchdog @ 1.0.0
 |-- SPI @ 1.1.0
 Building in release mode
 Checking size .pio/build/bluepill_f103c8/firmware.elf
 Advanced Memory Usage is available via "PlatformIO Home > Project Inspect"
-RAM:   [==        ]  25.0% (used 5120 bytes from 20480 bytes)
-Flash: [=======   ]  71.0% (used 46544 bytes from 65536 bytes)
+RAM:   [===       ]  25.1% (used 5132 bytes from 20480 bytes)
+Flash: [=======   ]  71.9% (used 47148 bytes from 65536 bytes)
 Configuring upload protocol...
 AVAILABLE: blackmagic, cmsis-dap, dfu, jlink, mbed, stlink
 CURRENT: upload_protocol = stlink
 Uploading .pio/build/bluepill_f103c8/firmware.elf
-========================= [SUCCESS] Took 8.09 seconds =========================
+========================= [SUCCESS] Took 7.95 seconds =========================
 xPack Open On-Chip Debugger 0.12.0-01004-g9ea7f3d64-dirty (2023-01-30-15:03)
 Licensed under GNU GPL v2
 For bug reports, read
@@ -371,9 +376,9 @@ hla_swd
 none separate
 
 [stm32f1x.cpu] halted due to debug-request, current mode: Thread 
-xPSR: 0x01000000 pc: 0x080028e8 msp: 0x20005000
+xPSR: 0x01000000 pc: 0x080025e0 msp: 0x20005000
 ** Programming Started **
-Warn : Adding extra erase range, 0x0800b70c .. 0x0800b7ff
+Warn : Adding extra erase range, 0x0800b968 .. 0x0800bbff
 ** Programming Finished **
 ** Verify Started **
 ** Verified OK **

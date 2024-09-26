@@ -51,7 +51,7 @@ This guide outlines the assembly process for a wireless field data transmitter d
 | SDA        | PB7           | I2C Data |
 | SCL        | PB6           | I2C Clock |
 
-### Physical Setup
+### Physical Setup Example
 
 <img src="figures/st-link-v2-stm32.png" alt="ST-Link V2 connected to Blue Pill" width="400"/>
 <img src="figures/stm32-cc1101-aht20-bmp280.png" alt="CC1101 and AHT20+BMP280 connected to Blue Pill" width="400"/>
