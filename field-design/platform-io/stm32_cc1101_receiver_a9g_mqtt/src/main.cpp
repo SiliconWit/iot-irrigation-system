@@ -2,7 +2,6 @@
 #include <RH_CC110.h>
 #include <SPI.h>
 #include <HardwareSerial.h>
-#include <IWatchdog.h>  // Include the IWatchdog library
 
 // Pin Definitions for CC1101 connection to STM32 BluePill
 #define CC1101_CS_PIN PA4   // Chip Select (CSN) pin
@@ -34,9 +33,9 @@
 #define LED_ON LOW
 #define LED_OFF HIGH
 
-#define MQTT_INTERVAL 180000 // 3 minutes in milliseconds
+#define SMS_INTERVAL 1800000 // 30 minutes in milliseconds
+#define MQTT_INTERVAL 1800000 // 30 minutes in milliseconds
 #define RESET_INTERVAL 2400000 // 40 minutes in milliseconds
-#define WATCHDOG_TIMEOUT 60000 // 60 seconds in milliseconds
 
 // Initialize CC1101 radio module
 RH_CC110 cc110(CC1101_CS_PIN, CC1101_GDO0_PIN);
@@ -44,11 +43,16 @@ RH_CC110 cc110(CC1101_CS_PIN, CC1101_GDO0_PIN);
 // Initialize UART for A9G module
 HardwareSerial A9GSerial(PA10, PA9);
 
-// MQTT broker details
-const char* mqtt_host = "192.168.100.6"; // Replace with your Ubuntu machine's IP address
-const char* mqtt_port = "1883";  // Default MQTT port
-const char* mqtt_topic = "sensor/data";
+const char* phone_number = "+254726240861";
 
+// MQTT Configuration
+const char* APN = "safaricom";
+const char* MQTT_BROKER = "test.mosquitto.org";
+const int MQTT_PORT = 1883;
+const char* MQTT_CLIENT_ID = "STM32Client";
+const char* MQTT_TOPIC = "/test/stm32/sensors";
+
+unsigned long previousSMSMillis = 0;
 unsigned long previousMQTTMillis = 0;
 unsigned long previousResetMillis = 0;
 unsigned long lastDataReceivedTime = 0;
@@ -66,17 +70,19 @@ bool newDataReceived = false;
 // Function prototypes
 void initCC1101();
 void initA9G();
+void initGPS();
 bool testA9G();
+String getGPSLocation();
+bool sendSMS(const String& message);
 String sendATCommand(const String& command, int timeout);
 void blinkLED(int times, int duration);
 void resetA9G();
 bool parseSensorData(const String& dataString, SensorData& data);
 String formatSensorData(const SensorData& data);
+float parseFloat(const String& str);
 void resetBluePill();
-bool connectToMQTT();
-bool publishMQTTMessage(const String& message);
-void disconnectMQTT();
-void initWatchdog();
+bool setupGPRS();
+bool publishMQTT(const String& message);
 
 void setup() {
   pinMode(LED_PIN, OUTPUT);
@@ -85,22 +91,17 @@ void setup() {
   SPI.begin();
   initCC1101();
   
-  A9GSerial.begin(9600);  // Set baud rate to 9600 for A9G
+  A9GSerial.begin(9600);
   delay(10000);  // Give A9G module time to start up
   
   initA9G();
-
-  // Initialize and start the watchdog timer
-  initWatchdog();
+  setupGPRS();
 
   // Indicate setup completion
   blinkLED(3, 200);  // 3 quick blinks
 }
 
 void loop() {
-  // Reset the watchdog timer at the beginning of each loop
-  IWatchdog.reload();
-
   uint8_t buf[RH_CC110_MAX_MESSAGE_LEN];
   uint8_t len = sizeof(buf);
   
@@ -126,24 +127,42 @@ void loop() {
   
   unsigned long currentMillis = millis();
   
-  // Check if it's time to send an MQTT message
+  // Check if it's time to send MQTT data
   if (currentMillis - previousMQTTMillis >= MQTT_INTERVAL) {
     previousMQTTMillis = currentMillis;
     
     if (testA9G()) {
-      if (connectToMQTT()) {
-        String message = formatSensorData(lastReceivedData);
-        if (publishMQTTMessage(message)) {
-          blinkLED(2, 500);  // 2 long blinks indicate successful MQTT publish
-          // Reset data to default after successful sending
-          lastReceivedData = {9999.0, 9999.0, 9999.0};
-          newDataReceived = false;
-        } else {
-          blinkLED(5, 50);  // 5 quick blinks indicate MQTT publish failure
-        }
-        disconnectMQTT();
+      String location = getGPSLocation();
+      String sensorDataString = formatSensorData(lastReceivedData);
+      String message = sensorDataString + "," + location;
+      if (publishMQTT(message)) {
+        blinkLED(4, 100);  // 4 quick blinks indicate successful MQTT publish
       } else {
-        blinkLED(4, 100);  // 4 medium blinks indicate MQTT connection failure
+        blinkLED(4, 250);  // 4 medium blinks indicate MQTT publish failure
+      }
+    } else {
+      resetA9G();
+      blinkLED(10, 50);  // 10 quick blinks indicate A9G reset attempt
+    }
+  }
+  
+  // Check if it's time to send an SMS
+  if (currentMillis - previousSMSMillis >= SMS_INTERVAL) {
+    previousSMSMillis = currentMillis;
+    
+    if (testA9G()) {
+      initGPS();
+      String location = getGPSLocation();
+      String sensorDataString = formatSensorData(lastReceivedData);
+      String message = sensorDataString + "," + location;
+      
+      if (sendSMS(message)) {
+        blinkLED(2, 500);  // 2 long blinks indicate successful SMS
+        // Reset data to default after successful sending
+        lastReceivedData = {9999.0, 9999.0, 9999.0};
+        newDataReceived = false;
+      } else {
+        blinkLED(5, 50);  // 5 quick blinks indicate SMS sending failure
       }
     } else {
       resetA9G();
@@ -167,19 +186,55 @@ void initCC1101() {
 }
 
 void initA9G() {
-  sendATCommand("AT", 1000);  // Test if A9G is responding
-  sendATCommand("ATE0", 1000);  // Turn off echo
-  sendATCommand("AT+CGATT=1", 2000);  // Attach to GPRS service
-  
-  // Set APN for Safaricom with more specific parameters
-  sendATCommand("AT+CGDCONT=1,\"IP\",\"safaricom\",\"0.0.0.0\",0,0", 2000);
-  
-  sendATCommand("AT+CGACT=1,1", 2000);  // Activate PDP context
+  sendATCommand("ATE0", 1000);
+  sendATCommand("AT+CGPSPWR=1", 2000);
+  delay(2000);
+  sendATCommand("AT+CGPSRST=1", 2000);
+  delay(2000);
+  sendATCommand("AT+CGPSIPR=9600", 2000);
+  delay(2000);
+  sendATCommand("AT+CGPSOUT=0", 2000);
+}
+
+void initGPS() {
+  sendATCommand("AT+CGPS=1,1", 5000);
+  delay(5000);
 }
 
 bool testA9G() {
   String response = sendATCommand("AT", 2000);
   return response.indexOf("OK") != -1;
+}
+
+String getGPSLocation() {
+  String response = sendATCommand("AT+CGPSINFO", 10000);
+  if (response.indexOf("+CGPSINFO:") != -1) {
+    int start = response.indexOf("+CGPSINFO:");
+    int end = response.indexOf("\r", start);
+    String gpsData = response.substring(start + 10, end);
+    gpsData.trim();
+    if (gpsData != ",,,,,,,," && gpsData.length() > 0) {
+      return "L:" + gpsData;
+    }
+  }
+  return "L:9999.0";
+}
+
+bool sendSMS(const String& message) {
+  if (sendATCommand("AT+CMGF=1", 2000).indexOf("OK") == -1) {
+    return false;
+  }
+  
+  String setNumberCmd = "AT+CMGS=\"" + String(phone_number) + "\"";
+  if (sendATCommand(setNumberCmd, 5000).indexOf(">") == -1) {
+    return false;
+  }
+  
+  A9GSerial.print(message);
+  A9GSerial.write(26);  // Ctrl+Z to end message
+  
+  String response = sendATCommand("", 10000);
+  return response.indexOf("+CMGS:") != -1;
 }
 
 String sendATCommand(const String& command, int timeout) {
@@ -192,7 +247,7 @@ String sendATCommand(const String& command, int timeout) {
     if (A9GSerial.available()) {
       char c = A9GSerial.read();
       response += c;
-      if (response.indexOf("OK") != -1 || response.indexOf("ERROR") != -1) {
+      if (response.indexOf("OK") != -1 || response.indexOf("ERROR") != -1 || response.indexOf(">") != -1) {
         break;
       }
     }
@@ -214,6 +269,19 @@ void resetA9G() {
   sendATCommand("AT+CRESET", 5000);
   delay(10000);
   initA9G();
+  setupGPRS();
+}
+
+float parseFloat(const String& str) {
+  if (str.length() == 0) return 9999.0;
+  
+  for (unsigned int i = 0; i < str.length(); i++) {
+    if (isdigit(str[i]) || str[i] == '.' || str[i] == '-') {
+      return str.toFloat();
+    }
+  }
+  
+  return 9999.0;
 }
 
 bool parseSensorData(const String& dataString, SensorData& data) {
@@ -251,33 +319,39 @@ String formatSensorData(const SensorData& data) {
   return result;
 }
 
-void initWatchdog() {
-  // Initialize the watchdog with a timeout of 60 seconds
-  if (!IWatchdog.isEnabled()) {
-    IWatchdog.begin(60000000); // 60 seconds in microseconds
-  }
-}
-
 void resetBluePill() {
-  // Use the IWatchdog to reset the system
-  IWatchdog.begin(1000); // Set a very short timeout
-  while(1); // Wait for watchdog reset
+  // Use the NVIC_SystemReset() function to reset the Blue Pill
+  NVIC_SystemReset();
 }
 
-bool connectToMQTT() {
-  String command = "AT+MQTTCONN=\"" + String(mqtt_host) + "\"," + String(mqtt_port) + ",12345,120";
-  String response = sendATCommand(command, 10000);
-  return response.indexOf("+MQTTCONNECTED") != -1;
+bool setupGPRS() {
+  bool success = true;
+
+  // Set up PDP context with APN
+  success &= sendATCommand("AT+CGDCONT=1,\"IP\",\"" + String(APN) + "\",\"0.0.0.0\",0,0", 5000).indexOf("OK") != -1;
+
+  // Activate PDP context
+  success &= sendATCommand("AT+CGACT=1,1", 10000).indexOf("OK") != -1;
+
+  return success;
 }
 
-bool publishMQTTMessage(const String& message) {
-  String command = "AT+MQTTPUB=\"" + String(mqtt_topic) + "\",\"" + message + "\",0,0,0";
-  String response = sendATCommand(command, 5000);
-  return response.indexOf("OK") != -1;
-}
+bool publishMQTT(const String& message) {
+  bool success = true;
 
-void disconnectMQTT() {
-  sendATCommand("AT+MQTTDISCONN", 5000);
+  // Connect to MQTT broker
+  String mqttConn = sendATCommand("AT+MQTTCONN=\"" + String(MQTT_BROKER) + "\"," + String(MQTT_PORT) + ",\"" + String(MQTT_CLIENT_ID) + "\",120,0", 15000);
+  success &= mqttConn.indexOf("OK") != -1;
+
+  if (success) {
+    // Publish the message to the MQTT topic
+    success &= sendATCommand("AT+MQTTPUB=\"" + String(MQTT_TOPIC) + "\",\"" + message + "\",0,0,0", 10000).indexOf("OK") != -1;
+    
+    // Disconnect from MQTT broker
+    sendATCommand("AT+MQTTDISCONN", 5000);
+  }
+
+  return success;
 }
 
 /* LED Blink Status Guide:
@@ -285,9 +359,9 @@ void disconnectMQTT() {
  * 2 quick blinks (loop): Successful data reception and parsing from CC1101
  * 1 long blink (loop): Data parsing failure
  * 3 very quick blinks (loop): CC1101 reception failure
- * 2 long blinks (loop): Successful MQTT publish
- * 5 quick blinks (loop): MQTT publish failure
- * 4 medium blinks (loop): MQTT connection failure
+ * 4 medium blinks (loop): MQTT publish failure
+ * 2 long blinks (loop): Successful SMS sent
+ * 5 quick blinks (loop): SMS sending failure
  * 10 quick blinks (loop): A9G reset attempt
  * 5 medium blinks (initCC1101): CC1101 initialization failure
  */
