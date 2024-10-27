@@ -1,12 +1,12 @@
 # PlatformIO Upload Report
 
-Date: 2024-09-29 00:30:46
+Date: 2024-10-10 21:26:11
 
 ## Command: `pio run --target clean`
 
 **Status:** Success
 
-**Execution Time:** 1.08 seconds
+**Execution Time:** 1.28 seconds
 
 **Output:**
 
@@ -16,7 +16,7 @@ Processing bluepill_f103c8 (platform: ststm32; board: bluepill_f103c8; framework
 Verbose mode can be enabled via `-v, --verbose` option
 Removing .pio/build/bluepill_f103c8
 Done cleaning
-========================= [SUCCESS] Took 0.46 seconds =========================
+========================= [SUCCESS] Took 0.39 seconds =========================
 
 ```
 
@@ -26,7 +26,7 @@ Done cleaning
 
 **Status:** Success
 
-**Execution Time:** 13.82 seconds
+**Execution Time:** 13.67 seconds
 
 **Output:**
 
@@ -253,10 +253,10 @@ Compiling .pio/build/bluepill_f103c8/lib299/RadioHead/RHGenericDriver.cpp.o
 Compiling .pio/build/bluepill_f103c8/lib299/RadioHead/RHGenericSPI.cpp.o
 Compiling .pio/build/bluepill_f103c8/lib299/RadioHead/RHHardwareSPI.cpp.o
 Compiling .pio/build/bluepill_f103c8/lib299/RadioHead/RHMesh.cpp.o
-Archiving .pio/build/bluepill_f103c8/lib6b7/libSPI.a
 Compiling .pio/build/bluepill_f103c8/lib299/RadioHead/RHNRFSPIDriver.cpp.o
-Indexing .pio/build/bluepill_f103c8/lib6b7/libSPI.a
 Compiling .pio/build/bluepill_f103c8/lib299/RadioHead/RHReliableDatagram.cpp.o
+Archiving .pio/build/bluepill_f103c8/lib6b7/libSPI.a
+Indexing .pio/build/bluepill_f103c8/lib6b7/libSPI.a
 Compiling .pio/build/bluepill_f103c8/lib299/RadioHead/RHRouter.cpp.o
 Compiling .pio/build/bluepill_f103c8/lib299/RadioHead/RHSPIDriver.cpp.o
 Compiling .pio/build/bluepill_f103c8/lib299/RadioHead/RHSoftwareSPI.cpp.o
@@ -307,9 +307,9 @@ Linking .pio/build/bluepill_f103c8/firmware.elf
 Checking size .pio/build/bluepill_f103c8/firmware.elf
 Advanced Memory Usage is available via "PlatformIO Home > Project Inspect"
 RAM:   [===       ]  25.1% (used 5140 bytes from 20480 bytes)
-Flash: [=======   ]  72.6% (used 47592 bytes from 65536 bytes)
+Flash: [=======   ]  72.6% (used 47596 bytes from 65536 bytes)
 Building .pio/build/bluepill_f103c8/firmware.bin
-========================= [SUCCESS] Took 13.51 seconds =========================
+========================= [SUCCESS] Took 13.35 seconds =========================
 In file included from .pio/libdeps/bluepill_f103c8/RadioHead/RH_LoRaFileOps.cpp:5:
 .pio/libdeps/bluepill_f103c8/RadioHead/RH_LoRaFileOps.h:27:2: warning: #warning RH_LoRaFileOps unfinished [-Wcpp]
    27 | #warning RH_LoRaFileOps unfinished
@@ -324,7 +324,7 @@ In file included from .pio/libdeps/bluepill_f103c8/RadioHead/RH_LoRaFileOps.cpp:
 
 **Status:** Success
 
-**Execution Time:** 8.49 seconds
+**Execution Time:** 8.36 seconds
 
 **Output:**
 
@@ -355,12 +355,12 @@ Building in release mode
 Checking size .pio/build/bluepill_f103c8/firmware.elf
 Advanced Memory Usage is available via "PlatformIO Home > Project Inspect"
 RAM:   [===       ]  25.1% (used 5140 bytes from 20480 bytes)
-Flash: [=======   ]  72.6% (used 47592 bytes from 65536 bytes)
+Flash: [=======   ]  72.6% (used 47596 bytes from 65536 bytes)
 Configuring upload protocol...
 AVAILABLE: blackmagic, cmsis-dap, dfu, jlink, mbed, stlink
 CURRENT: upload_protocol = stlink
 Uploading .pio/build/bluepill_f103c8/firmware.elf
-========================= [SUCCESS] Took 7.94 seconds =========================
+========================= [SUCCESS] Took 8.02 seconds =========================
 xPack Open On-Chip Debugger 0.12.0-01004-g9ea7f3d64-dirty (2023-01-30-15:03)
 Licensed under GNU GPL v2
 For bug reports, read
@@ -373,7 +373,7 @@ none separate
 [stm32f1x.cpu] halted due to debug-request, current mode: Thread 
 xPSR: 0x01000000 pc: 0x080025e0 msp: 0x20005000
 ** Programming Started **
-Warn : Adding extra erase range, 0x0800bb24 .. 0x0800bbff
+Warn : Adding extra erase range, 0x0800bb28 .. 0x0800bbff
 ** Programming Finished **
 ** Verify Started **
 ** Verified OK **

@@ -5,14 +5,14 @@
 
 // Pin Definitions for CC1101 connection to STM32 BluePill
 #define CC1101_CS_PIN PA4   // Chip Select (CSN) pin
-#define CC1101_GDO0_PIN PA3 // General Digital Output 0 pin
+#define CC1101_GDO0_PIN PB0 // General Digital Output 0 pin
 
 /* Complete CC1101 to STM32 BluePill Connection Guide:
  * CC1101 Pin | BluePill Pin | Function
  * -----------|--------------|----------
  * 1 (GND)    | GND          | Ground
  * 2 (VCC)    | 3.3V         | Power (3.3V only!)
- * 3 (GDO0)   | PA3          | General Digital Output 0 (Configurable)
+ * 3 (GDO0)   | PB0          | General Digital Output 0 (Configurable)
  * 4 (CSN)    | PA4          | SPI Chip Select
  * 5 (SCK)    | PA5          | SPI Clock
  * 6 (MOSI)   | PA7          | SPI Master Out Slave In
@@ -34,7 +34,7 @@
 #define LED_OFF HIGH
 
 #define SMS_INTERVAL 1800000 // 30 minutes in milliseconds
-#define MQTT_INTERVAL 1800000 // 30 minutes in milliseconds
+#define MQTT_INTERVAL 60000 //1800000 // 30 minutes in milliseconds
 #define RESET_INTERVAL 2400000 // 40 minutes in milliseconds
 
 // Initialize CC1101 radio module
