@@ -54,6 +54,8 @@ source venv/bin/activate
 
 ```bash
 # Install necessary packages
+pip install -r requirements.txt
+# OR 
 pip install jupyter numpy pandas ipywidgets matplotlib seaborn
 
 # Create a kernel for Jupyter
